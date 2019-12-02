@@ -1,12 +1,17 @@
 package com.mmall.service.impl;
 
+import com.mmall.common.Const;
 import com.mmall.common.ServerResponse;
+import com.mmall.common.TokenCache;
 import com.mmall.dao.UserMapper;
 import com.mmall.pojo.User;
 import com.mmall.service.IUserService;
+import com.mmall.util.MD5Util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 /**
  * Created by think9 on 19-12-1.
@@ -25,14 +30,119 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createByError("there is no this user");
         }
 
-        //todo password in md5
-
-        User user = userMapper.selectLogin(username, password);
+        String md5Password = MD5Util.MD5EncodeUtf8(password);
+        User user = userMapper.selectLogin(username, md5Password);
         if(user == null){
             return ServerResponse.createByError("password is wrong");
         }
 
         user.setPassword(StringUtils.EMPTY);//set user password null for security,and return
         return ServerResponse.createBySuccess("login success",user);
+    }
+
+    @Override
+    public ServerResponse<String> register(User user) {
+//
+//        int resultCount = userMapper.checkUsername(user.getUsername());
+//        if(resultCount > 0){
+//            return ServerResponse.createByError("this username already used");
+//        }
+//
+//        resultCount = userMapper.checkEmail(user.getEmail());
+//        if(resultCount > 0){
+//            return ServerResponse.createByError("this email already used");
+//        }
+
+        ServerResponse<String> checkResponse = this.checkValid(user.getUsername(),Const.USERNAME);
+        if(!checkResponse.isSuccess()){
+            return checkResponse;
+        }
+        checkResponse = this.checkValid(user.getEmail(),Const.EMAIL);
+        if(!checkResponse.isSuccess()){
+            return checkResponse;
+        }
+
+        user.setRole(Const.Role.ROLE_CUSTOMER);
+        //turn password to MD5 code
+        user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
+
+        int resultCount = userMapper.insert(user);
+        if(resultCount == 0){
+            return ServerResponse.createByError("register failed");
+        }
+        return ServerResponse.createBySuccessMessage("register success");
+    }
+
+    @Override
+    public ServerResponse<String> checkValid(String str, String type) {
+        if(StringUtils.isNotBlank(type)){
+            if(Const.USERNAME.equals(type)){
+                int resultCount = userMapper.checkUsername(str);
+                if(resultCount == 0){
+                    return ServerResponse.createByError("this username is unregistered");
+                }
+            }
+            if(Const.EMAIL.equals(type)){
+                int resultCount = userMapper.checkEmail(str);
+                if(resultCount == 0){
+                    return ServerResponse.createByError("this email is unregistered");
+                }
+            }
+        }else{
+            return ServerResponse.createByError("invalid blank input");
+        }
+        return ServerResponse.createBySuccessMessage("passed by checking");
+
+    }
+
+    @Override
+    public ServerResponse<String> selectQuestion(String username) {
+        ServerResponse<String> checkResponse = this.checkValid(username,Const.USERNAME);
+        if(!checkResponse.isSuccess()){
+            return checkResponse;
+        }
+        String question = userMapper.selectQuestionByUsername(username);
+        if(StringUtils.isNotBlank(question)){
+            return ServerResponse.createBySuccessMessage(question);
+        }
+        return ServerResponse.createByError("question is blank");
+    }
+
+    @Override
+    public ServerResponse<String> checkAnswer(String username, String question, String answer) {
+        int resultCount = userMapper.checkAnswer(username,question,answer);
+        if(resultCount > 0){
+            //anwer right
+            String forgetToken = UUID.randomUUID().toString();
+            TokenCache.setKey(TokenCache.TOKEN_PREFIX+username,forgetToken);
+            return  ServerResponse.createBySuccess(forgetToken);
+        }
+        return ServerResponse.createByError("anwer is wrong");
+    }
+
+    @Override
+    public ServerResponse<String> forgetResetPassword(String username, String passwordNew, String forgetToken) {
+        if(StringUtils.isNotBlank((forgetToken))){
+            return ServerResponse.createByError("params wrong,need token");
+        }
+        ServerResponse validResponse = this.checkValid(username,Const.USERNAME);
+        if(validResponse.isSuccess()){
+            return ServerResponse.createByError("user is not exist");
+        }
+        String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX+username);
+        if(StringUtils.isBlank(token)){
+            return ServerResponse.createByError("token invalid or past due");
+        }
+        if(StringUtils.equals(forgetToken,token)){
+            String md5Password = MD5Util.MD5EncodeUtf8(passwordNew);
+            int rowCount = userMapper.updatePasswordByUsername(username,md5Password);
+            if(rowCount > 0){
+                return ServerResponse.createBySuccessMessage("update password successful");
+            }
+        }else {
+            return ServerResponse.createByError("token is wrong , do reset again");
+        }
+        return ServerResponse.createByError("update false");
+
     }
 }
