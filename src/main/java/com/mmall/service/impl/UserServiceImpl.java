@@ -75,17 +75,17 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public ServerResponse<String> checkValid(String str, String type) {
-        if(StringUtils.isNotBlank(type)){
+        if(StringUtils.isNotBlank(str)){
             if(Const.USERNAME.equals(type)){
                 int resultCount = userMapper.checkUsername(str);
                 if(resultCount == 0){
-                    return ServerResponse.createByError("this username is unregistered");
+                    return ServerResponse.createByError("this username is invalid");
                 }
             }
             if(Const.EMAIL.equals(type)){
                 int resultCount = userMapper.checkEmail(str);
                 if(resultCount == 0){
-                    return ServerResponse.createByError("this email is unregistered");
+                    return ServerResponse.createByError("this email is invalid");
                 }
             }
         }else{
