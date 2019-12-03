@@ -4,7 +4,6 @@
     <title>Home</title>
 </head>
 <body>
-<h3>come from cent server</h3>
-
+<jsp:include page="BookStoreTemp/Home/Index.html"/>
 </body>
 </html>
