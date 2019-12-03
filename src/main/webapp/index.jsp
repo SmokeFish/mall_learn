@@ -4,7 +4,7 @@
     <title>Home</title>
 </head>
 <body>
-<jsp:include page="static/nav_top.html"></jsp:include>
+<h3>come from cent server</h3>
 
 </body>
 </html>
