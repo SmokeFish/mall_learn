@@ -116,7 +116,10 @@ public class User {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setUpdateTime(Date updateTime) {this.updateTime = updateTime;}
+
+    @Override
+    public String toString() {
+        return id+" "+username+" "+password+" "+email+" "+phone+" "+question+" "+answer+" "+role+" "+createTime+" "+updateTime;
     }
 }

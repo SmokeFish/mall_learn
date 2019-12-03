@@ -1,10 +1,10 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <script src=""></script>
-    <script></script>
+    <title>Home</title>
 </head>
 <body>
-    <h2>qian tai ye mian</h2>
+<jsp:include page="static/nav_top.html"></jsp:include>
 
 </body>
 </html>

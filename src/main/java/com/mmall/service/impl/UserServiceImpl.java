@@ -145,4 +145,38 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createByError("update false");
 
     }
+
+    @Override
+    public ServerResponse<String> resetPassword(User user, String passwordOld, String passwordNew) {
+        int resultCount = userMapper.checkPassword(user.getId(),MD5Util.MD5EncodeUtf8(passwordOld));
+        if(resultCount == 0){
+            return ServerResponse.createByError("password wrong");
+        }
+        String md5PasswordNew = MD5Util.MD5EncodeUtf8(passwordNew);
+        user.setPassword(md5PasswordNew);
+        resultCount = userMapper.updateByPrimaryKeySelective(user);
+        if(resultCount > 0){
+            return ServerResponse.createBySuccessMessage("update successful");
+        }
+        return ServerResponse.createByError("update false");
+    }
+
+    @Override
+    public ServerResponse<User> updateInformation(User user) {
+        int resultCount = userMapper.checkEmailByUserId(user.getId(),user.getEmail());
+        if(resultCount > 0){
+            return ServerResponse.createByError("email already exist,try another email");
+        }
+        User updateUser = new User();
+        updateUser.setId(user.getId());
+        updateUser.setEmail(user.getEmail());
+        updateUser.setPhone(user.getPhone());
+        updateUser.setQuestion(user.getQuestion());
+        updateUser.setAnswer(user.getAnswer());
+        int updateCount = userMapper.updateByPrimaryKeySelective(updateUser);
+        if(updateCount > 0){
+            return ServerResponse.createBySuccess("update successful",updateUser);
+        }
+        return ServerResponse.createByError("update false");
+    }
 }
