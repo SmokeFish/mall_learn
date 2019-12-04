@@ -1,6 +1,7 @@
 package com.mmall.controller.portal;
 
 import com.mmall.common.Const;
+import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.pojo.User;
 import com.mmall.service.IUserService;
@@ -103,7 +104,7 @@ public class UserController {
     @ResponseBody
     public ServerResponse<User> updateInformation(HttpSession session,User user){
         User userOld = (User) session.getAttribute(Const.CURRENT_USER);
-        if(user == null){
+        if(userOld == null){
             return ServerResponse.createByError("there is no login user");
         }
         ServerResponse<User> response = iUserService.updateInformation(user);
@@ -111,6 +112,18 @@ public class UserController {
             session.setAttribute(Const.CURRENT_USER,response.getData());
         }
         return response;
+    }
+
+    @RequestMapping(value = "get_information.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<User> getInformaion(HttpSession session){
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByCodeError(ResponseCode.NEED_LOGIN.getCode(),"there is no login user");
+        }
+        user.setPassword(StringUtils.EMPTY);
+        user.setAnswer(StringUtils.EMPTY);
+        return ServerResponse.createBySuccess(user);
     }
 }
 
