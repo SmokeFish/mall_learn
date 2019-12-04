@@ -3,15 +3,62 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
+<script type="text/javascript" src="../js/jquery.min.js" ></script>
+<script>
+	$(function(){
+		$("li").on("click",function(){
+			$(".active").removeClass("active");
+			$(this).addClass("active");
+		})
+		$.ajax({
+				type:"Post",
+				url:"/user/get_user_info.do",
+				data:{},
+			success:function(data){
+				var info = data;
+				if(info.status ==0 ){
+					$("#msg").html('歡迎登錄,'+info.data).addClass("text-info text-center").show();
+				}
+			},
+			error:function(){
+				$("#msg").html("請求連接失敗!").addClass("text-danger text-center").show();
+			}
+		})
+	})
+</script>
+<style type="text/css">
+	ul{
+		margin-top:15px ;
+		margin-bottom: 15px;
+		margin-right: 80px;
+		float: right;
+	}
+	li{
+		float:right;
+		margin-left: 50px;
+		margin-right: 77px;
+		width: 120px;
+		font-size: 18px;
+	}
+	#msg{
+		display: none;
+		margin:auto;
+		margin-top: 10px;
+	}
+</style>
 </head>
-<body>
-	<div>
-		<dl>
-			<dt>This block is head</dt>
-			<dd><a href="index.html" target="body">home</a> </dd>
-			<dd><a href="login.html" target="body">login</a></dd>
-			<dd><a href="sign-up.html" target="body">login</a></dd>
-		</dl>
-	</div>
+<body class="style-2">
+	<div class="row">
+				<div class="col-md-12 text-center">
+					<ul class="nav nav-pills">
+						<li class="active"><a href="index.html" target="body">Home</a></li>
+						<li><a href="login.html" target="body">Login</a></li>
+						<li><a href="sign-up.html" target="body">Sign-up</a></li>
+						<li id="msg"></li>
+					</ul>
+				</div>
+			</div>
 </body>
 </html>

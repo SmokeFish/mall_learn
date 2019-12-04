@@ -7,8 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<frameset rows="10%,*">
-	<frame src="html/head.html" name="head">
+<frameset rows="10%,*" frameborder="0" framespacing="0">
+	<frame src="html/head.html" name="head" scrolling="no">
 	<frame src="html/login.html" name="body">
 </frameset>
 </html>
