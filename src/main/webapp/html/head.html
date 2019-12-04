@@ -13,18 +13,25 @@
 			$(this).addClass("active");
 		})
 		$.ajax({
-				type:"Post",
+				type:"get",
 				url:"/user/get_user_info.do",
 				data:{},
 			success:function(data){
 				var info = data;
 				if(info.status ==0 ){
-					$("#msg").html('歡迎登錄,'+info.data).addClass("text-info text-center").show();
+					$("#msg").html('歡迎登錄,'+info.data.username).addClass("text-info text-center").show();
+					$(".unlogin").hide();
+					$("#logout").show();
 				}
 			},
 			error:function(){
-				$("#msg").html("請求連接失敗!").addClass("text-danger text-center").show();
+				$("#msg").hide();
 			}
+		});
+		$("#logout").on("click",function(){
+			$.get("/user/logout.do",{},function(){
+				top.location.href="/index.jsp"
+			})
 		})
 	})
 </script>
@@ -43,9 +50,13 @@
 		font-size: 18px;
 	}
 	#msg{
+		width:auto;
 		display: none;
 		margin:auto;
 		margin-top: 10px;
+	}
+	#logout{
+		display: none;
 	}
 </style>
 </head>
@@ -54,9 +65,10 @@
 				<div class="col-md-12 text-center">
 					<ul class="nav nav-pills">
 						<li class="active"><a href="index.html" target="body">Home</a></li>
-						<li><a href="login.html" target="body">Login</a></li>
-						<li><a href="sign-up.html" target="body">Sign-up</a></li>
+						<li class="unlogin"><a href="login.html" target="body">Login</a></li>
+						<li class="unlogin"><a href="sign-up.html" target="body">Sign-up</a></li>
 						<li id="msg"></li>
+						<li id="logout"><a href="javascript:void(0)">Login-out</a></li>
 					</ul>
 				</div>
 			</div>

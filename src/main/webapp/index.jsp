@@ -9,6 +9,6 @@
 <html>
 <frameset rows="10%,*" frameborder="0" framespacing="0">
 	<frame src="html/head.html" name="head" scrolling="no">
-	<frame src="html/login.html" name="body">
+	<frame src="html/index.html" name="body">
 </frameset>
 </html>
