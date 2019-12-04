@@ -7,8 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<frameset rows="18%,*">
+<frameset rows="10%,*">
 	<frame src="html/head.html" name="head">
-	<frame src="html/index.html" name="body">
+	<frame src="html/login.html" name="body">
 </frameset>
 </html>

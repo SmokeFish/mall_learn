@@ -35,7 +35,9 @@ public class UserController {
     @ResponseBody
     //declare response body
     public ServerResponse<User> login(String username , String password , HttpSession session){
-
+        if(StringUtils.isBlank(username)||StringUtils.isBlank(password)){
+            return ServerResponse.createByError("username or password is blank");
+        }
         ServerResponse<User> response = iUserService.login(username,password);
         if(response.isSuccess()){
             session.setAttribute(Const.CURRENT_USER,response.getData());
