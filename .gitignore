@@ -1,10 +1,14 @@
 *.class
 
 #package file
+
 *.war
 *.ear
 
 #kdiff3 ignore
+*.orig
+
+#maven ignore
 target/
 
 #eclipse ignore
@@ -19,7 +23,7 @@ target/
 *.iml
 *.iws
 
-#temp  file
+# temp file
 
 *.log
 *.cache
