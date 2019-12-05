@@ -75,13 +75,13 @@ public class UserServiceImpl implements IUserService {
         if(StringUtils.isNotBlank(str)){
             if(Const.USERNAME.equals(type)){
                 int resultCount = userMapper.checkUsername(str);
-                if(resultCount == 0){
+                if(resultCount > 0){
                     return ServerResponse.createByError("用户名已存在");
                 }
             }
             if(Const.EMAIL.equals(type)){
                 int resultCount = userMapper.checkEmail(str);
-                if(resultCount == 0){
+                if(resultCount > 0){
                     return ServerResponse.createByError("邮箱地址已存在");
                 }
             }
