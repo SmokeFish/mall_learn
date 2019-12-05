@@ -69,7 +69,7 @@ public class UserController {
     }
 
     /**
-     * 类型检验
+     * 检验是否有效
      * @param str
      * @param type
      * @return
@@ -120,7 +120,7 @@ public class UserController {
     }
 
     /**
-     * 忘记密码重置答案
+     * 核查后重置密码
      * @param username
      * @param passwordNew
      * @param forgetToken
@@ -133,7 +133,7 @@ public class UserController {
     }
 
     /**
-     * 普通充值答案
+     * 重置密码
      * @param session
      * @param passwordOld
      * @param passwordNew
@@ -170,7 +170,7 @@ public class UserController {
     }
 
     /**
-     * 获取用户详细信息)
+     * 获取用户详细信息
      * @param session
      * @return
      */

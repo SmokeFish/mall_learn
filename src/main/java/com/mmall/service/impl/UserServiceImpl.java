@@ -95,8 +95,8 @@ public class UserServiceImpl implements IUserService {
     @Override
     public ServerResponse<String> selectQuestion(String username) {
         ServerResponse<String> checkResponse = this.checkValid(username,Const.USERNAME);
-        if(!checkResponse.isSuccess()){
-            return checkResponse;
+        if(checkResponse.isSuccess()){
+            return ServerResponse.createByError("用户不存在");
         }
         String question = userMapper.selectQuestionByUsername(username);
         if(StringUtils.isNotBlank(question)){
