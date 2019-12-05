@@ -35,6 +35,7 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createByError("密码错误");
         }
         user.setPassword(StringUtils.EMPTY);//set user password null for security,and return
+        user.setAnswer(StringUtils.EMPTY);
         return ServerResponse.createBySuccess("登陆成功",user);
     }
 
