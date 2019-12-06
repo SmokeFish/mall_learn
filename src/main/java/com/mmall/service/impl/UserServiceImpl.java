@@ -7,6 +7,7 @@ import com.mmall.dao.UserMapper;
 import com.mmall.pojo.User;
 import com.mmall.service.IUserService;
 import com.mmall.util.MD5Util;
+import com.sun.corba.se.spi.activation.Server;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,19 +25,17 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public ServerResponse<User> login(String username, String password) {
-
         int resultCount = userMapper.checkUsername(username);
         if(resultCount == 0 ){
             return ServerResponse.createByError("用户不存在");
         }
-
         String md5Password = MD5Util.MD5EncodeUtf8(password);
         User user = userMapper.selectLogin(username, md5Password);
         if(user == null){
             return ServerResponse.createByError("密码错误");
         }
-
         user.setPassword(StringUtils.EMPTY);//set user password null for security,and return
+        user.setAnswer(StringUtils.EMPTY);
         return ServerResponse.createBySuccess("登陆成功",user);
     }
 
@@ -61,7 +60,6 @@ public class UserServiceImpl implements IUserService {
         if(!checkResponse.isSuccess()){
             return checkResponse;
         }
-
         user.setRole(Const.Role.ROLE_CUSTOMER);
         //turn password to MD5 code
         user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
@@ -78,13 +76,13 @@ public class UserServiceImpl implements IUserService {
         if(StringUtils.isNotBlank(str)){
             if(Const.USERNAME.equals(type)){
                 int resultCount = userMapper.checkUsername(str);
-                if(resultCount == 0){
+                if(resultCount > 0){
                     return ServerResponse.createByError("用户名已存在");
                 }
             }
             if(Const.EMAIL.equals(type)){
                 int resultCount = userMapper.checkEmail(str);
-                if(resultCount == 0){
+                if(resultCount > 0){
                     return ServerResponse.createByError("邮箱地址已存在");
                 }
             }
@@ -98,8 +96,8 @@ public class UserServiceImpl implements IUserService {
     @Override
     public ServerResponse<String> selectQuestion(String username) {
         ServerResponse<String> checkResponse = this.checkValid(username,Const.USERNAME);
-        if(!checkResponse.isSuccess()){
-            return checkResponse;
+        if(checkResponse.isSuccess()){
+            return ServerResponse.createByError("用户不存在");
         }
         String question = userMapper.selectQuestionByUsername(username);
         if(StringUtils.isNotBlank(question)){
@@ -188,5 +186,12 @@ public class UserServiceImpl implements IUserService {
         user.setPassword(StringUtils.EMPTY);
         user.setAnswer(StringUtils.EMPTY);
         return ServerResponse.createBySuccess(user);
+    }
+
+    public ServerResponse checkAdminRole(User user){
+        if(user != null && user.getRole().intValue() == Const.Role.ROLE_ADMIN){
+            return ServerResponse.createBySuccess();
+        }
+        return ServerResponse.createByError();
     }
 }

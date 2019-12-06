@@ -35,7 +35,9 @@ public class UserController {
     @ResponseBody
     //declare response body
     public ServerResponse<User> login(String username , String password , HttpSession session){
-
+        if(StringUtils.isBlank(username)||StringUtils.isBlank(password)){
+            return ServerResponse.createByError("username or password is blank");
+        }
         ServerResponse<User> response = iUserService.login(username,password);
         if(response.isSuccess()){
             session.setAttribute(Const.CURRENT_USER,response.getData());
@@ -60,14 +62,14 @@ public class UserController {
      * @param user
      * @return
      */
-    @RequestMapping(value = "register.do",method = RequestMethod.GET)
+    @RequestMapping(value = "register.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> register(User user){
         return iUserService.register(user);
     }
 
     /**
-     * 类型检验
+     * 检验是否有效
      * @param str
      * @param type
      * @return
@@ -111,33 +113,33 @@ public class UserController {
      * @param answer
      * @return
      */
-    @RequestMapping(value = "forget_check_answer.do",method = RequestMethod.GET)
+    @RequestMapping(value = "forget_check_answer.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> forgetCheckAnswer(String username,String question,String answer){
         return iUserService.checkAnswer(username,question,answer);
     }
 
     /**
-     * 忘记密码重置答案
+     * 核查后重置密码
      * @param username
      * @param passwordNew
      * @param forgetToken
      * @return
      */
-    @RequestMapping(value = "forget_reset_password.do",method = RequestMethod.GET)
+    @RequestMapping(value = "forget_reset_password.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> forgetRestPassword(String username,String passwordNew,String forgetToken){
         return iUserService.forgetResetPassword(username, passwordNew, forgetToken);
     }
 
     /**
-     * 普通充值答案
+     * 重置密码
      * @param session
      * @param passwordOld
      * @param passwordNew
      * @return
      */
-    @RequestMapping(value = "reset_password.do",method = RequestMethod.GET)
+    @RequestMapping(value = "reset_password.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> resetPassword(HttpSession session,String passwordOld,String passwordNew){
         User user = (User) session.getAttribute(Const.CURRENT_USER);
@@ -153,7 +155,7 @@ public class UserController {
      * @param user
      * @return
      */
-    @RequestMapping(value = "update_information.do",method = RequestMethod.GET)
+    @RequestMapping(value = "update_information.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> updateInformation(HttpSession session,User user){
         User userOld = (User) session.getAttribute(Const.CURRENT_USER);
@@ -168,7 +170,7 @@ public class UserController {
     }
 
     /**
-     * 获取用户详细信息)
+     * 获取用户详细信息
      * @param session
      * @return
      */
