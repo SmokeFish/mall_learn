@@ -17,14 +17,15 @@
 		var username = $("#username").val();
 		//2.定义正则
 		var reg_username = /^\w{4,16}$/;
-		
+		closeError($("#username"));
 		//3.判断，给出提示信息
 	    var flag = reg_username.test(username);
 	    if(flag || username==""){
 	        //用户名合法
             $("#username").css("border","");
-            //关闭提示框
-            closeError($("#username"));
+			//
+			//console.log($("#username").val()+""+$("#username").attr("name"));
+			if(username!="") checkValid($("#username"));
 		}else{
 	        //用户名非法,加一个红色边框
 			$("#username").css("border-bottom","1px solid red");
@@ -63,9 +64,12 @@
 		var reg_email = /^\w+@\w+\.\w+$/;
 		//3.判断
 		var flag = reg_email.test(email);
+		//
+		closeError($("#email"));
 		if(flag || email==""){
             $("#email").css("border","");
-            closeError($("#email"));
+			//closeError($("#email"));
+			if(email!="")checkValid($("#email"));
 		}else{
             $("#email").css("border-bottom","1px solid red");
             errorMessage($("#email"),"请输入正确的邮箱地址");
@@ -115,16 +119,35 @@
 		}
 	}
 	function closeError($input){
+		if($input.next().length > 0)
 			$input.next("div").remove();
 	}
+
+	function checkValid($input){
+		//console.log($input.val()+""+$input.attr("name"));
+		$.ajax({
+			url:"/user/check_valid.do",
+			data:{str:$input.val(),type:$input.attr("name")},
+			type:"get",
+			success:function(data){
+				if(data.status){
+					$input.css("border-bottom","1px solid red");
+					errorMessage($input,data.msg);
+				}else{
+					closeError($input)
+				}
+			}
+		});
+	}
+
 	$(function () {
         //当表单提交时，调用所有的校验方法
 		$("#alert_span").hide();
 		/*
 		 *  提交
 		 */
-		$("#register_form").submit(function() {
-			if (checkUsername() && checkPassword() && checkEmail() && checkName() && checkTelephone()) {
+		$("#submit_form").on("click",function() {
+			if (checkUsername() && checkPassword() && checkEmail() && checkRepassword() && checkTelephone()) {
 				$.ajax({
 					url: "/user/register.do",
 					data: $("#register_form").serializeArray(),
@@ -134,7 +157,7 @@
 							status = data.status;
 						if (status == 0) {
 							alert("注册成功");
-//							window.location.href = "login.html";
+							window.location.href = "/html/login.html";
 						} else {
 							alert("注册失败");
 						}
