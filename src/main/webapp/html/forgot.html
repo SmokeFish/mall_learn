@@ -164,45 +164,46 @@
 			$fm2.hide();
 			$fm3.hide();
 			$fm1.submit(function(){
+				if($("#username").val() != "")
 				$.get("/user/forget_get_question.do",
-					$(this).serialize(),
-					function(data){
-						if(data.status){
-							username = $("#username").val();
-							question = data.data;
-							$("#que-span").html(question);
-							$fm1.hide();
-							$fm2.show();
-						}else{
-							$("#al1").html(data.msg)
-						}
-					})
-			});
-			$fm2.submit(function(){
-				$.post("/user/forget_get_question.do",
-					{'username':username,'question':question,'answer':$("#answer").val()},
-					function(data){
-						if(data.status){
-							$fm2.hide();
-							$fm3.show();
-							forgetToken = data.data;
-						}else{
-							$("#al2").html(data.msg)
-						}
-					})
-			});
+						{'username':$("#username").val()},
+						function(data){
+							if(data.status == 0){
+								username = $("#username").val();
+								question = data.data;
+								$("#que-span").html(question);
+								$fm1.hide();
+								$fm2.show();
+							}else{
+								$("#al1").html(data.msg)
+							}
+						})
+				});
+				$fm2.submit(function(){
+					$.post("/user/forget_check_answer.do",
+						{'username':username,'question':question,'answer':$("#answer").val()},
+						function(data){
+							if(data.status == 0){
+								$fm2.hide();
+								$fm3.show();
+								forgetToken = data.data;
+							}else{
+								$("#al2").html(data.msg)
+							}
+						})
+				});
 			$fm3.submit(function(){
-				$.post("/user/forget_get_question.do",
-					$(this).serialize(),
-					function(data){
-						if(data.status){
-							alert(data.msg);
-						}else{
-							$("#al3").html(data.msg)
-						}
-					})
-			});
-		})
+				$.post("/user/forget_reset_password.do",
+						{'username':username,'passwordNew':$("#passwordNew").val(),'forgetToken':forgetToken},
+						function(data){
+							if(data.status == 0){
+								alert(data.msg);
+							}else{
+								$("#al3").html(data.msg)
+							}
+						})
+				});
+			})
 	</script>
 
 	</body>

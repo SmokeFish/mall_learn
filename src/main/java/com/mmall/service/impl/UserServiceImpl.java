@@ -101,7 +101,7 @@ public class UserServiceImpl implements IUserService {
         }
         String question = userMapper.selectQuestionByUsername(username);
         if(StringUtils.isNotBlank(question)){
-            return ServerResponse.createBySuccessMessage(question);
+            return ServerResponse.createBySuccess(question);
         }
         return ServerResponse.createByError("问题为空");
     }
@@ -119,7 +119,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public ServerResponse<String> forgetResetPassword(String username, String passwordNew, String forgetToken) {
-        if(StringUtils.isNotBlank((forgetToken))){
+        if(StringUtils.isBlank((forgetToken))){
             return ServerResponse.createByError("参数错误");
         }
         ServerResponse validResponse = this.checkValid(username,Const.USERNAME);
