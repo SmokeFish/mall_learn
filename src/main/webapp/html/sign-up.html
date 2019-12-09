@@ -77,11 +77,11 @@
 					<form id="register_form" action="#" class="fh5co-form animate-box" data-animate-effect="fadeIn">
 						<h2>Sign Up</h2>
 						<div class="form-group">
-							<div id="alert_span" class="alert alert-success" role="alert">Your info has been saved.</div>
+							<div id="alert_span" class="alert alert-success" role="alert"></div>
 						</div>
 						<div class="form-group">
 							<label for="name" class="sr-only">Name</label>
-							<input type="text" class="form-control" id="name" name="username" placeholder="Name" autocomplete="off">
+							<input type="text" class="form-control" id="username" name="username" placeholder="Name" autocomplete="off">
 						</div>
 						<div class="form-group">
 							<label for="email" class="sr-only">Email</label>
@@ -114,7 +114,7 @@
 							<p>Already registered? <a href="login.html">Sign In</a></p>
 						</div>
 						<div class="form-group">
-							<input id="submit_form" type="button" value="Sign Up" class="btn btn-primary">
+							<input id="submit_form" type="submit" value="Sign Up" class="btn btn-primary">
 						</div>
 					</form>
 					<!-- END Sign In Form -->
@@ -138,30 +138,8 @@
 	<script src="../js/jquery.waypoints.min.js"></script>
 	<!-- Main JS -->
 	<script src="../js/main.js"></script>
-	<!-- Submit Js -->
-	<script>
-		$(function(){
-			$("#alert_span").hide();
-			$("#submit_form").on("click",function(){
-				$.ajax({
-					url:"/user/register.do",
-					data:$("#register_form").serializeArray(),
-					type:"post",
-					success:function(data){
-						var msg = data.msg,
-							status = data.status;
-						if(status == 0){
-						alert("注册成功");
-						window.location.href="login.html";
-					}else{
-						alert("注册失败");
-						$("#alert_span").html(msg).show();
-						}
-					}
-				})
-			})
-		})
-	</script>
+	<!-- Register form JS -->
+	<script src="../js/register.js"></script>
 
 	</body>
 </html>

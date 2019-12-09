@@ -92,6 +92,21 @@ a:hover {
 .fh5co-form .form-group p a {
   color: #000000;
 }
+.errored{
+ position: absolute;
+  z-index: 10;
+  display: block;
+  max-width: 300px;
+  padding: 5px 8px;
+  margin: 4px 0 0;
+  font-size: 13px;
+  border: solid 1px;
+  border-radius: 3px;
+  color: #86181d;
+  background-color: #ffdce0;
+  border-color: #cea0a5;
+  height: 30px;
+}
 .fh5co-form label {
   font-weight: 300;
   font-size: 14px;
