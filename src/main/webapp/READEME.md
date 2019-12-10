@@ -18,3 +18,6 @@ add_category.do
 set_category_name.do
 get_category.do
 get_deep_category.do
+/manage/product/
+detail.do
+set_sale_status.do
