@@ -1,6 +1,5 @@
 package com.mmall.service.impl;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
@@ -172,7 +171,7 @@ public class ProductServiceImpl implements IProductService {
 
 
     public ServerResponse<PageInfo> getProductListByKeywordCategory(String keyword, Integer categoryId, Integer pageNum, Integer pageSize, String orderBy) {
-        if(StringUtils.isNotBlank(keyword) || categoryId == null){
+        if(StringUtils.isBlank(keyword) || categoryId == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
         List<Integer> categoryIdList = new ArrayList<Integer>();

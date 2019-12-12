@@ -21,3 +21,11 @@ get_deep_category.do
 /manage/product/
 detail.do
 set_sale_status.do
+save.do
+list.do
+search.do
+upload.do
+richtext_imt_upload.do
+/product/
+detail.do
+list.do
