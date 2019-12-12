@@ -59,16 +59,16 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     public ServerResponse<List<Category>> getChildrenParallelCategory(Integer categoryId){
-        List<Category> categoryList = categoryMapper.selectChildrenParallelCategory(categoryId);
+        List<Category> categoryList = categoryMapper.selectCategoryChildrenByParentId(categoryId);
         if(CollectionUtils.isEmpty(categoryList)){
             logger.info("未找到当前分类的子分类");
         }
         return ServerResponse.createBySuccess(categoryList);
     }
 
-    public ServerResponse selectCategoryAndChirldrenCategory(Integer categoryId){
+    public ServerResponse<List<Integer>> selectCategoryAndChildrenById(Integer categoryId){
         Set<Category> categorySet = Sets.newHashSet();
-        findChirldCategory(categorySet,categoryId);
+        findChildCategory(categorySet,categoryId);
 
         List<Integer> categoryList = Lists.newArrayList();
         if(categoryId != null) {
@@ -79,14 +79,14 @@ public class CategoryServiceImpl implements ICategoryService {
         return ServerResponse.createBySuccess(categoryList);
     }
 
-    private Set<Category> findChirldCategory(Set<Category> categorySet , Integer categoryId){
+    private Set<Category> findChildCategory(Set<Category> categorySet , Integer categoryId){
         Category category = categoryMapper.selectByPrimaryKey(categoryId);
         if(category != null){
             categorySet.add(category);
         }
-        List<Category> categoryList = categoryMapper.selectChildrenParallelCategory(categoryId);
+        List<Category> categoryList = categoryMapper.selectCategoryChildrenByParentId(categoryId);
         for (Category categoryItem : categoryList) {
-            findChirldCategory(categorySet,categoryItem.getId());
+            findChildCategory(categorySet,categoryItem.getId());
         }
         return categorySet;
     }

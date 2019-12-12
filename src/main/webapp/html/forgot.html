@@ -73,20 +73,63 @@
 					
 
 					<!-- Start Sign In Form -->
-					<form action="#" class="fh5co-form animate-box" data-animate-effect="fadeIn">
+					<form id="form1" action="#" class="fh5co-form animate-box" data-animate-effect="fadeIn">
 						<h2>Forgot Password</h2>
 						<div class="form-group">
-							<div class="alert alert-success" role="alert">Your email has been sent.</div>
+							<div id="al1" class="alert alert-success" role="alert">请输入您的用户名</div>
 						</div>
 						<div class="form-group">
-							<label for="email" class="sr-only">Email</label>
-							<input type="email" class="form-control" id="email" placeholder="Email" autocomplete="off">
+							<label for="username" class="sr-only">Username</label>
+							<input type="username" class="form-control" id="username" placeholder="Username" autocomplete="off">
 						</div>
 						<div class="form-group">
 							<p><a href="login.html">Sign In</a> or <a href="sign-up.html">Sign Up</a></p>
 						</div>
 						<div class="form-group">
-							<input type="submit" value="Send Email" class="btn btn-primary">
+							<input type="submit" value="Submit" class="btn btn-primary">
+						</div>
+					</form>
+					
+					<!-- second form -->
+					<form id="form2" action="#" class="fh5co-form animate-box" data-animate-effect="fadeIn">
+						<h2>Forgot Question</h2>
+						<div class="form-group">
+							<div id="al2" class="alert alert-success" role="alert">请填写您在注册时填写的答案</div>
+						</div>
+						<div class="form-group">
+							<h3>Question:<span id="que-span"></span></h3>
+						</div>
+						<div class="form-group">
+							<label for="answer" class="sr-only">Answer</label>
+							<input type="answer" class="form-control" id="answer" placeholder="Answer" autocomplete="off">
+						</div>
+						<div class="form-group">
+							<p><a href="login.html">Sign In</a> or <a href="sign-up.html">Sign Up</a></p>
+						</div>
+						<div class="form-group">
+							<input type="submit" value="Submit Answer" class="btn btn-primary">
+						</div>
+					</form>
+					
+					<!-- last form -->
+					<form id="form3" action="#" class="fh5co-form animate-box" data-animate-effect="fadeIn">
+						<h2>Reset Password</h2>
+						<div class="form-group">
+							<div id="al3" class="alert alert-success" role="alert">设置新的密码</div>
+						</div>
+						<div class="form-group">
+							<label for="passwordNew" class="sr-only">New Password</label>
+							<input type="passwordNew" class="form-control" id="passwordNew" placeholder="New Password" autocomplete="off">
+						</div>
+						<div class="form-group">
+							<label for="re-password" class="sr-only">Re-type Password</label>
+							<input type="password" class="form-control" id="re-password" placeholder="Re-type Password" autocomplete="off">
+						</div>
+						<div class="form-group">
+							<p><a href="login.html">Sign In</a> or <a href="sign-up.html">Sign Up</a></p>
+						</div>
+						<div class="form-group">
+							<input type="submit" value="Reset Password" class="btn btn-primary">
 						</div>
 					</form>
 					<!-- END Sign In Form -->
@@ -111,6 +154,57 @@
 	<script src="../js/jquery.waypoints.min.js"></script>
 	<!-- Main JS -->
 	<script src="../js/main.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			var username,question,forgetToken;
+			$fm1 = $("#form1");
+			$fm2 = $("#form2");
+			$fm3 = $("#form3");
+			$fm1.show();
+			$fm2.hide();
+			$fm3.hide();
+			$fm1.submit(function(){
+				if($("#username").val() != "")
+				$.get("/user/forget_get_question.do",
+						{'username':$("#username").val()},
+						function(data){
+							if(data.status == 0){
+								username = $("#username").val();
+								question = data.data;
+								$("#que-span").html(question);
+								$fm1.hide();
+								$fm2.show();
+							}else{
+								$("#al1").html(data.msg)
+							}
+						})
+				});
+				$fm2.submit(function(){
+					$.post("/user/forget_check_answer.do",
+						{'username':username,'question':question,'answer':$("#answer").val()},
+						function(data){
+							if(data.status == 0){
+								$fm2.hide();
+								$fm3.show();
+								forgetToken = data.data;
+							}else{
+								$("#al2").html(data.msg)
+							}
+						})
+				});
+			$fm3.submit(function(){
+				$.post("/user/forget_reset_password.do",
+						{'username':username,'passwordNew':$("#passwordNew").val(),'forgetToken':forgetToken},
+						function(data){
+							if(data.status == 0){
+								alert(data.msg);
+							}else{
+								$("#al3").html(data.msg)
+							}
+						})
+				});
+			})
+	</script>
 
 	</body>
 </html>

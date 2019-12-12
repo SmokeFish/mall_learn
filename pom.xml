@@ -163,7 +163,7 @@
       <version>3.1</version>
     </dependency>
 
-    <!-- file upload -->
+    <!-- file upload.jsp -->
 
     <!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
     <dependency>

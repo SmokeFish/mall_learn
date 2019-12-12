@@ -98,14 +98,14 @@ public class CategoryManageController {
      */
     @RequestMapping("get_deep_category.do")
     @ResponseBody
-    public ServerResponse getCategoryAndDeepChirldrenCategory(HttpSession session,@RequestParam(value = "categoryId",defaultValue = "0") Integer categoryId){
+    public ServerResponse getCategoryAndDeepChildrenCategory(HttpSession session,@RequestParam(value = "categoryId",defaultValue = "0") Integer categoryId){
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录");
         }
         if(iUserService.checkAdminRole(user).isSuccess()){
             //查询当前id的category和递归子节点的id
-            return iCategoryService.getChildrenParallelCategory(categoryId);
+            return iCategoryService.selectCategoryAndChildrenById(categoryId);
         }else{
             return ServerResponse.createByError("用户权限不足");
         }
