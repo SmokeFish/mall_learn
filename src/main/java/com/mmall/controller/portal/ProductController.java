@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by Hasee on 2019/12/10.
@@ -18,6 +19,13 @@ public class ProductController {
     @Autowired
     private IProductService iProductService;
 
+    @RequestMapping("detail.do")
+    @ResponseBody
+    public ServerResponse detail(Integer productId){
+        return iProductService.getProductDetail(productId);
+    }
+    @RequestMapping("list.do")
+    @ResponseBody
     public ServerResponse<PageInfo> list( @RequestParam( value="keyword", required = false) String keyword ,
                                           @RequestParam( value="categoryId", required = false)Integer categoryId,
                                           @RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
