@@ -105,7 +105,7 @@ public class CategoryManageController {
         }
         if(iUserService.checkAdminRole(user).isSuccess()){
             //查询当前id的category和递归子节点的id
-            return iCategoryService.selectCategoryAndChildrenCategory(categoryId);
+            return iCategoryService.selectCategoryAndChildrenById(categoryId);
         }else{
             return ServerResponse.createByError("用户权限不足");
         }
