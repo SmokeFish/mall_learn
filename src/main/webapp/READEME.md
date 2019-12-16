@@ -14,7 +14,7 @@ get_information get 获取用户详细信息 (session)
 /manage/user/
 login.do post 管理员登录 (username,password)
 /manage/category/
-add_category.do
+add_category.do 新增分类
 set_category_name.do
 get_category.do
 get_deep_category.do
@@ -29,3 +29,14 @@ richtext_imt_upload.do
 /product/
 detail.do
 list.do
+/cart/
+add.do
+update.do
+delete_product.do
+list.do
+select_all.do
+un_select_all.do
+select.do
+un_select.do
+get_cart_product_count.do
+
