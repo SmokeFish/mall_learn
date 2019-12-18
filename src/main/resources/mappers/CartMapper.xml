@@ -151,7 +151,11 @@
     </if>
   </delete>
 
-
+  <delete id="deleteByUserIdProductId" parameterType="map">
+    delete from mmall_cart
+    where user_id = #{userId}
+      and product_id = #{productId}
+  </delete>
 
   <update id="checkedOrUncheckedProduct" parameterType="map">
     UPDATE  mmall_cart

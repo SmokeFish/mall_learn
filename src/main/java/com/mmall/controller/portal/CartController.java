@@ -68,7 +68,7 @@ public class CartController {
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return iCartService.selectOrUnselectAll(user.getId(),Const.Cart.CHECKED);
+        return iCartService.selectOrUnSelectAll(user.getId(),Const.Cart.CHECKED);
     }
     @RequestMapping("un_select_all.do")
     @ResponseBody
@@ -77,7 +77,7 @@ public class CartController {
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return iCartService.selectOrUnselectAll(user.getId(),Const.Cart.UN_CHECKED);
+        return iCartService.selectOrUnSelectAll(user.getId(),Const.Cart.UN_CHECKED);
     }
     @RequestMapping("select.do")
     @ResponseBody
