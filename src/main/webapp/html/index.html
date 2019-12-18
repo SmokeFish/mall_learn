@@ -6,6 +6,35 @@
 		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="../css/style.css" />
 		<title></title>
+		<style>
+		#hdnv{
+		padding-bottom: 15px;
+		min-height: 55px;
+		font-size: 24px;
+		background: inherit;
+		opacity: 1;
+		}
+		#hdnv ul li{
+			text-align: center;	
+			border-right: lightgray solid 1px;
+			border-left: lightgray solid 1px;
+			width: 20%;
+			list-style: none;
+			background: inherit;
+			float: left;
+		}
+		#hdnv ul  a{
+			text-decoration: none;
+			color: black;
+		}
+		#hdnv ul li:hover{
+			color: blueviolet;
+			background: gainsboro;
+		}
+		#hdnv ul li a:visited{
+			background: inherit;
+		}	
+		</style>
 	</head>
 
 	<body class="style-3">
@@ -21,10 +50,19 @@
 			<div class="label"></div>
 		</div>
 		
-		<div id="product_show_table" class="container">
-				<div class="page-header">
-					<h3>Theme</h3>
-				</div>
+		<div class="container product_show_table">
+			<div id="hdnv" class="cetagory">
+				<ul>
+					<a href="list.html?categoryId=100001"><li>1</li></a>
+					<a href="list.html?categoryId=100002"><li>2</li></a>
+					<a href="list.html?categoryId=100003"><li>3</li></a>	
+					<a href="list.html?categoryId=100004"><li>4</li></a>	
+					<a href="list.html?categoryId=100005"><li>5</li></a>	
+				</ul>
+			</div>
+			<div class="page-header sample">
+				<h3>Theme</h3>
+			</div>
 			<div class="row">
 				<div class="col-lg-4">
 					<h2>Heading</h2>
@@ -56,12 +94,16 @@
 		<script type="text/javascript" src="../js/jquery.min.js"></script>
 		<script src="../js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
 		<script>
-			
-			function pst(){
+		
+			function product(){
 				$.ajax({
 					type:"get",
 					url:"",
-					async:true
+					async:true,
+					success:function(data){
+						//获取主页商品推荐信息
+						
+					}
 				});
 			}
 		</script>

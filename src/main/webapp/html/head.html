@@ -15,6 +15,7 @@
 			success:function(data){
 				var info = data;
 				if(info.status ==0 ){
+					//显示登录信息
 					$("#msg").html('歡迎登錄,'+info.data.username).addClass("text-info text-center").show();
 					$(".unlogin").hide();
 					$(".logined").show();

@@ -6,37 +6,26 @@
 		<link rel="stylesheet" type="text/css" href="../css/style.css" />
 		<title></title>
 	</head>
-	<body class="style-3">
+	<body>
 		<div class="container">
-			<div class="row">
-				<div class="col-md-4">
-					image
-				</div>
-				<div class="col-md-4">
-					
-				</div>
-				<div class="col-md-4">
-					tjsc
-				</div>
-			</div>
+			
 		</div>
+		
 		<script src="../js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-		<script type="text/javascript">
+		<script src="../js/getParameter.js" type="text/javascript" charset="utf-8"></script>
+		<script>
 			$(function(){
-				$.ajax({
-					type:"get",
-					url:"/cart/list.do",
-					async:true,
-					success:function(data){
-						var status = data.status;
-						if(status==1){
-							//提示登录
-						}else if(status == 0){
-							//显示购物车
+				var categoryId = getParameter("categoryId"),
+					keyword = getParameter("keyword"),
+					pageNum,pageSize,orderBy;
+					$.get("/product/list.do",{categoryId},function(data){
+						var list = data.data.list;
+						for(var i=0;i<list.length;i++){
+							$(".container").append(list.name)
 						}
-					}
-				});
+					})
+//				alert(categoryId)
 			})
 		</script>
 	</body>
