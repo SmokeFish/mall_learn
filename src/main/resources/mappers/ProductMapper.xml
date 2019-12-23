@@ -199,7 +199,7 @@
       </if>
     </where>
   </select>
-  
+  <!--根据商品名或分类获取在售商品list-->
   <select id="selectByNameAndCategoryIds" resultMap="BaseResultMap" parameterType="map">
     SELECT
     <include refid="Base_Column_List"></include>

@@ -163,10 +163,10 @@
     where email = #{email}
   </select>
 
-
+<!--返回用户登录信息-->
   <select id="selectLogin" resultMap="BaseResultMap" parameterType="map">
     SELECT
---     *???//这样真的好么?答案就是,这样不好.
+--     选择base_col作为返回值,这样的好处是避免了日后添加新的数据信息造成不必要的查询,利于维护
     <include refid="Base_Column_List" />
     from mmall_user
     where username = #{username}

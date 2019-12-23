@@ -23,6 +23,12 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     * 用户登录
+     * @param username
+     * @param password
+     * @return
+     */
     @Override
     public ServerResponse<User> login(String username, String password) {
         int resultCount = userMapper.checkUsername(username);
@@ -34,7 +40,8 @@ public class UserServiceImpl implements IUserService {
         if(user == null){
             return ServerResponse.createByError("密码错误");
         }
-        user.setPassword(StringUtils.EMPTY);//set user password null for security,and return
+        //将返回值中的密码和问题答案设为空值
+        user.setPassword(StringUtils.EMPTY);
         user.setAnswer(StringUtils.EMPTY);
         return ServerResponse.createBySuccess("登陆成功",user);
     }

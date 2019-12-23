@@ -31,13 +31,13 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "login.do",method = RequestMethod.POST)
-    //set map key and method
     @ResponseBody
-    //declare response body
     public ServerResponse<User> login(String username , String password , HttpSession session){
+        //如果输入为空,返回ServerResponse.error
         if(StringUtils.isBlank(username)||StringUtils.isBlank(password)){
-            return ServerResponse.createByError("username or password is blank");
+            return ServerResponse.createByError("用户名或者密码输入为空");
         }
+        //调用Service层接口
         ServerResponse<User> response = iUserService.login(username,password);
         if(response.isSuccess()){
             session.setAttribute(Const.CURRENT_USER,response.getData());

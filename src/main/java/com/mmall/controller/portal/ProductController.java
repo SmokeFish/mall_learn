@@ -24,6 +24,16 @@ public class ProductController {
     public ServerResponse detail(Integer productId){
         return iProductService.getProductDetail(productId);
     }
+
+    /**
+     * 根据keyword或categoryId进行查询,返回对应pageNum的page结果
+     * @param keyword
+     * @param categoryId
+     * @param pageNum
+     * @param pageSize
+     * @param orderBy
+     * @return
+     */
     @RequestMapping("list.do")
     @ResponseBody
     public ServerResponse<PageInfo> list( @RequestParam( value="keyword", required = false) String keyword ,

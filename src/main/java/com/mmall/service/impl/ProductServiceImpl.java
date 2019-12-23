@@ -36,6 +36,11 @@ public class ProductServiceImpl implements IProductService {
     @Autowired
     private ICategoryService iCategoryService;
 
+    /**
+     * 添加或修改商品信息
+     * @param product
+     * @return
+     */
     public ServerResponse saveOrUpdateProduct(Product product){
         if(product != null){
             if(StringUtils.isNotBlank(product.getSubImages())){
@@ -44,6 +49,7 @@ public class ProductServiceImpl implements IProductService {
                     product.setMainImage(subImageArray[0]);
                 }
             }
+            //如果商品id不为空,执行update方法,否则视为添加
             if(product.getId() != null){
                 int rowCount = productMapper.updateByPrimaryKey(product);
                 if(rowCount > 0){
